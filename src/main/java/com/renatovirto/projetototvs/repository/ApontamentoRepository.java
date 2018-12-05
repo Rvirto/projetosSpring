@@ -9,5 +9,7 @@ import com.renatovirto.projetototvs.model.Funcionario;
 
 public interface ApontamentoRepository extends JpaRepository<Apontamento, Long> {
 
-	public List<Apontamento> findByFuncionario(Funcionario funcionario);
+	public List<Apontamento> findByFuncionarioOrderByIdDesc(Funcionario funcionario);
+	
+	public List<Apontamento> findAllByOrderByIdDesc();
 }

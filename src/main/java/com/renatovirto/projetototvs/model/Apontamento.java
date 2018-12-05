@@ -36,7 +36,7 @@ public class Apontamento {
 	@ManyToOne
 	@JoinColumn(name="id_funcionario")
 	private Funcionario funcionario;
-
+	
 	public Apontamento() {
 		this.dataInicio = new Date();
 	}

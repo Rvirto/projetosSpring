@@ -2,7 +2,9 @@ package com.renatovirto.projetototvs.service;
 
 import java.util.Date;
 import java.util.List;
-
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,7 +24,7 @@ public class ApontamentoService {
 	private FuncionarioService funcionarioService;
 	
 	public List<Apontamento> todosApontamentos() {
-		return apontamentoRepository.findAll();
+		return apontamentoRepository.findAllByOrderByIdDesc();
 	}
 	
 	public Apontamento encontrarApontamento(Long id) {
@@ -66,14 +68,21 @@ public class ApontamentoService {
 	}
 	
 	public Long calcularHoras(Apontamento apontamento) {
-		Long quantidade = (long) apontamento.getDataFim().getHours() - (long) apontamento.getDataInicio().getHours();
-		
+		LocalDateTime dataFinal = convertToLocalDateTimeViaInstant(apontamento.getDataFim());
+		LocalDateTime dataInicio = convertToLocalDateTimeViaInstant(apontamento.getDataInicio());
+		Long quantidade = ChronoUnit.HOURS.between(dataInicio, dataFinal);
 		return quantidade;
+	}
+	
+	public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
+	    return dateToConvert.toInstant()
+	      .atZone(ZoneId.systemDefault())
+	      .toLocalDateTime();
 	}
 	
 	public List<Apontamento> listarApontamentosFuncionario(Long id) {
 		Funcionario funcionarioBuscado = funcionarioService.encontrarFuncionario(id);
-		List<Apontamento> apontamentos = apontamentoRepository.findByFuncionario(funcionarioBuscado);
+		List<Apontamento> apontamentos = apontamentoRepository.findByFuncionarioOrderByIdDesc(funcionarioBuscado);
 		
 		return apontamentos;
 	}
