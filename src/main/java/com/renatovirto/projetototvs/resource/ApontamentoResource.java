@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.renatovirto.projetototvs.model.Apontamento;
+import com.renatovirto.projetototvs.repository.filter.ApontamentoFilter;
 import com.renatovirto.projetototvs.service.ApontamentoService;
 import com.renatovirto.projetototvs.service.AtividadesService;
 
@@ -33,6 +34,11 @@ public class ApontamentoResource {
 	@GetMapping
 	public List<Apontamento> listarTodos() {
 		return apontamentoService.todosApontamentos();
+	}
+	
+	@GetMapping("/busca")
+	public List<Apontamento> buscarComParametros(ApontamentoFilter apontamentoFilter) {
+		return apontamentoService.encontrarApontamento(apontamentoFilter);
 	}
 	
 	@GetMapping("/{id}")

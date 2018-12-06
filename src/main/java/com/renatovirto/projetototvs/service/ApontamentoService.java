@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.renatovirto.projetototvs.model.Apontamento;
 import com.renatovirto.projetototvs.model.Funcionario;
 import com.renatovirto.projetototvs.repository.ApontamentoRepository;
+import com.renatovirto.projetototvs.repository.filter.ApontamentoFilter;
 
 @Service
 public class ApontamentoService {
@@ -85,5 +86,9 @@ public class ApontamentoService {
 		List<Apontamento> apontamentos = apontamentoRepository.findByFuncionarioOrderByIdDesc(funcionarioBuscado);
 		
 		return apontamentos;
+	}
+	
+	public List<Apontamento> encontrarApontamento(ApontamentoFilter apontamentoFilter) {
+		return apontamentoRepository.filtrar(apontamentoFilter);
 	}
 }
